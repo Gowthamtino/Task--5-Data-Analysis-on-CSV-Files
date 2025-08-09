@@ -1,0 +1,59 @@
+# Task 5: Data Analysis on CSV Files using Pandas
+
+# Step 1: Import libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Step 2: Load CSV
+# Replace 'sales_data.csv' with your actual file name
+df = pd.read_csv("sales_data.csv")
+
+# Step 3: View first few rows
+print("First 5 rows of the dataset:")
+print(df.head())
+
+# Step 4: Basic info and summary
+print("\nDataset Info:")
+print(df.info())
+print("\nStatistical Summary:")
+print(df.describe())
+
+# Step 5: Total sales by category
+print("\nTotal Sales by Category:")
+category_sales = df.groupby('Category')['Sales'].sum()
+print(category_sales)
+
+# Plot sales by category
+plt.figure(figsize=(8, 5))
+category_sales.plot(kind='bar', color='skyblue')
+plt.title("Total Sales by Category")
+plt.xlabel("Category")
+plt.ylabel("Sales")
+plt.show()
+
+# Step 6: Monthly sales trend
+df['Order Date'] = pd.to_datetime(df['Order Date'])
+df['Month'] = df['Order Date'].dt.month
+monthly_sales = df.groupby('Month')['Sales'].sum()
+
+# Plot monthly sales
+plt.figure(figsize=(8, 5))
+monthly_sales.plot(kind='line', marker='o')
+plt.title("Monthly Sales Trend")
+plt.xlabel("Month")
+plt.ylabel("Sales")
+plt.grid(True)
+plt.show()
+
+# Step 7: Top 5 products by sales
+print("\nTop 5 Products by Sales:")
+top_products = df.groupby('Product Name')['Sales'].sum().sort_values(ascending=False).head(5)
+print(top_products)
+
+# Plot top products
+plt.figure(figsize=(8, 5))
+top_products.plot(kind='bar', color='orange')
+plt.title("Top 5 Products by Sales")
+plt.xlabel("Product Name")
+plt.ylabel("Sales")
+plt.show()
